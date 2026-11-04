@@ -5,7 +5,12 @@ import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Experience from './components/Experience';
+<<<<<<< HEAD
 import HireMe from './components/HireMe';
+=======
+import Creative from './components/Creative';
+import Contact from './components/Contact';
+>>>>>>> 4f0b6b7946024e3bcd4039fcc81869d09ebeff22
 import Footer from './components/Footer';
 import { prefersReducedMotion } from './lib/motion';
 
@@ -34,7 +39,12 @@ export default function App() {
         <Skills />
         <Projects />
         <Experience />
+<<<<<<< HEAD
         <HireMe />
+=======
+        <Creative />
+        <Contact />
+>>>>>>> 4f0b6b7946024e3bcd4039fcc81869d09ebeff22
       </main>
       <Footer />
     </>
