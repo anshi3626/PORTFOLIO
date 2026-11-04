@@ -1,43 +1,38 @@
-# Anshika Yadav – Portfolio
+# Anshika Yadav · Portfolio
 
-React + TypeScript + Vite portfolio with a Three.js / React Three Fiber hero scene, Framer Motion reveals, and a mailto-based contact form.
+Editorial, cinematic portfolio built with React, TypeScript, Vite, GSAP (with ScrollTrigger) and Framer Motion.
 
-## Run locally
+## Run
 
 ```bash
 npm install
 npm run dev
-```
-
-Open the URL Vite prints (usually http://localhost:5173).
-
-## Build
-
-```bash
 npm run build      # type-check + production build into dist/
-npm run preview    # serve dist/ locally
 ```
 
-## Edit your content
+## Add your portrait
 
-Almost everything lives in **`src/data/content.ts`**:
+Save your photo as `public/portrait.jpg` (portrait orientation, at least 800 px wide works well). Until then, a marked placeholder is shown in the hero. Nothing is faked.
 
-- `personal.github`: replace `PLACEHOLDER` with your GitHub URL. Until then the GitHub icon shows as a disabled placeholder.
-- `projects`: set `status`, `problem`, `approach`, `results`, `github` and `demo`. Any field still set to `PLACEHOLDER` is shown as an unfinished item rather than being filled in with invented text. Only add results you have verified.
-- `certifications`: add a `certificateUrl` only when a real certificate file or link exists. The "View Certificate" button appears only in that case.
-- `creativeItems`: set `image` to a real image path (for example `/creative/poster-1.jpg` in `public/`) and update the titles. Keep images to your own work.
+## Where content lives
 
-Nothing in the site claims a result, certificate, repository or screenshot that is not in this file.
+Everything editable is in `src/data/content.ts`, based on your resume and the links you provided:
 
-## Notes
+- `personal`: name, email, LinkedIn, GitHub, education.
+- `hero`, `about`, `skillGroups`, `experience`, `certifications`: resume-backed text.
+- `projects`: add `github` for a repository link. Projects without a link show no link button.
+- `caseStudyTodo`: marks the case study text as "to be added". Replace it with real problem, approach and results once you have verified them.
 
-- **3D:** the hero scene and the About ornament load lazily. On devices without WebGL, on devices with 2 or fewer CPU threads, or when the visitor prefers reduced motion, a static CSS orb is shown instead.
-- **Contact form:** there is no backend. Submitting opens the visitor's email app with the message pre-filled to your address. Nothing is stored or delivered by the site itself.
-- **Accessibility:** skip link, semantic landmarks, keyboard-operable tabs and dialogs, `aria-current` on the active nav link, and reduced-motion support throughout.
+## Motion stack
 
-## Deploy
+- **GSAP + ScrollTrigger:** the hero opening timeline, portrait parallax, section reveals (`src/lib/useSectionReveal.ts`), and the Hire Me string drawing, sway and hand pulls. Everything is scoped with `gsap.context` and reverted on unmount.
+- **Framer Motion:** button hover and tap, the navigation indicator (`layoutId`), the Hire Me tilt and light sweep, and the contact overlay. Framer and GSAP never animate the same element.
+- **Flashlight** (`src/components/Flashlight.tsx`): a reusable torchlight. It moves through CSS custom properties inside a `requestAnimationFrame` loop, so pointer events never re-render React. Touch works by press and drag. It is disabled for reduced motion and low-power devices.
 
-Any static host works, since the output is plain files in `dist/`:
+## Accessibility
 
-- **Vercel / Netlify:** import the repository, build command `npm run build`, output directory `dist`.
-- **GitHub Pages:** set `base` in `vite.config.ts` to `'/<repo-name>/'`, then publish `dist/`.
+Skip link, semantic landmarks, keyboard-operable dialog with focus trap, Escape to close, focus returned to the trigger, visible focus rings, and `prefers-reduced-motion` support throughout.
+
+## Deploy (Vercel)
+
+Import the GitHub repository in Vercel. It detects Vite automatically. Build command `npm run build`, output directory `dist`.

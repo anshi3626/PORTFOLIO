@@ -1,64 +1,37 @@
-import { useState } from 'react';
-import type { KeyboardEvent } from 'react';
+import { useRef } from 'react';
 import { skillGroups } from '../data/content';
-import Reveal from './Reveal';
+import { useSectionReveal } from '../lib/useSectionReveal';
 
 export default function Skills() {
-  const [activeId, setActiveId] = useState(skillGroups[0].id);
-  const group = skillGroups.find((g) => g.id === activeId) ?? skillGroups[0];
-
-  const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>, index: number) => {
-    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-    e.preventDefault();
-    const next =
-      e.key === 'ArrowRight' ? (index + 1) % skillGroups.length : (index - 1 + skillGroups.length) % skillGroups.length;
-    setActiveId(skillGroups[next].id);
-    document.getElementById(`skill-tab-${skillGroups[next].id}`)?.focus();
-  };
+  const ref = useRef<HTMLElement>(null);
+  useSectionReveal(ref);
 
   return (
-    <section id="skills">
-      <div className="container">
-        <Reveal>
-          <p className="eyebrow">02 · Skills</p>
-          <h2 className="section-title">Technologies I've studied & worked with.</h2>
-          <p className="section-lead">
-            A map of tools and areas I am learning and practising. These are areas of study and hands-on exposure, not
-            expert-level claims.
-          </p>
-        </Reveal>
+    <section id="skills" className="section" ref={ref}>
+      <div className="rule" data-rule aria-hidden="true" />
+      <div className="section-head">
+        <p className="mono kicker" data-reveal>
+          Chapter 02 · Skills
+        </p>
+        <h2 className="display" data-reveal>
+          What I have <em>studied.</em>
+        </h2>
+        <p className="lead" data-reveal>
+          Areas I am learning and practising. These are not proficiency levels.
+        </p>
+      </div>
 
-        <div role="tablist" aria-label="Skill categories" className="skills-tabs">
-          {skillGroups.map((g, i) => (
-            <button
-              key={g.id}
-              id={`skill-tab-${g.id}`}
-              role="tab"
-              aria-selected={g.id === activeId}
-              aria-controls="skills-panel"
-              tabIndex={g.id === activeId ? 0 : -1}
-              onClick={() => setActiveId(g.id)}
-              onKeyDown={(e) => onKeyDown(e, i)}
-            >
-              {g.title}
-            </button>
-          ))}
-        </div>
-
-        <Reveal>
-          <div id="skills-panel" role="tabpanel" aria-labelledby={`skill-tab-${group.id}`} className="glass skills-panel" key={group.id}>
-            <h3>{group.title}</h3>
-            <div>
-              {group.items.map((item) => (
-                <span key={item} className="skill-chip">
-                  {item}
-                </span>
+      <div className="skill-grid">
+        {skillGroups.map((g) => (
+          <div key={g.title} className="skill-col" data-reveal>
+            <h3 className="mono label">{g.title}</h3>
+            <ul className="plain-list">
+              {g.items.map((item) => (
+                <li key={item}>{item}</li>
               ))}
-            </div>
+            </ul>
           </div>
-        </Reveal>
-
-        <p className="skills-note">Skills are listed to show learning areas. No proficiency levels are claimed.</p>
+        ))}
       </div>
     </section>
   );
